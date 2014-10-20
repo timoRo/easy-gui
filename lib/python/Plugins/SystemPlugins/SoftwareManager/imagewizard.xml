@@ -1,0 +1,31 @@
+<!--suppress XmlUnboundNsPrefix -->
+<wizard>
+	<step id="restorequestion">
+		<condition>
+from Plugins.SystemPlugins.SoftwareManager.ImageWizard import checkConfigBackup
+self.backuppath = checkConfigBackup()
+self.condition = (self.backuppath is not None and config.misc.firstrun.value)
+		</condition>
+		<text value="Do you want to restore your settings?" />
+		<list>
+			<listentry caption="Yes, restore the settings now" step="restore" />
+			<listentry caption="No, continue with the initial set up" step="end" />
+		</list>
+		<code>
+self.clearSelectedKeys()
+self.selectKey("OK")
+		</code>
+	</step>
+
+	<step id="restore" >
+		<text value="You have chosen to restore your settings. System will restart after restore. Please press OK to start the restore now." />
+		<config screen="RestoreScreen" module="Plugins.SystemPlugins.SoftwareManager.BackupRestore" type="ConfigList" />
+	</step>
+
+	<step id="end" laststep="true">
+		<condition>
+self.condition = self.isLastWizard
+		</condition>
+		<text value="The wizard is finished now." />
+	</step>
+</wizard>
